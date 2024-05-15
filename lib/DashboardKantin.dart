@@ -109,18 +109,51 @@ class _DashboardKantinState extends State<DashboardKantin> {
               ),
             ),
           ),
-          Expanded(
-            child: ListView.builder(
-              itemCount: _menus.length,
-              itemBuilder: (BuildContext context, int index) {
-                final menu = _menus[index];
-                return ListTile(
-                  leading: Image.asset('assets/images${menu.name}.png',
-                      width: 50, height: 50),
-                  title: Text(menu.name ?? ''),
-                  trailing: Text(menu.price ?? ''),
+          Flexible(
+            child: GridView.count(
+              crossAxisCount: 2,
+              crossAxisSpacing: 5,
+              mainAxisSpacing: 5,
+              childAspectRatio: 0.8,
+              children: _menus.map((menu) {
+                return Center(
+                  child: Card(
+                    child: InkWell(
+                      splashColor: Colors.blue.withAlpha(30),
+                      onTap: () {
+                        // Handle tap event
+                      },
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: <Widget>[
+                          ClipRRect(
+                            borderRadius: BorderRadius.only(
+                              topLeft: Radius.circular(4.0),
+                              topRight: Radius.circular(4.0),
+                            ),
+                            child: ClipOval(
+                              child: Image.asset(
+                                'assets/images/${menu.name}.jpeg',
+                                height: 120,
+                              ),
+                            ),
+                          ),
+                          Container(
+                            padding: EdgeInsets.all(8.0),
+                            child: Text(
+                              menu.name ?? '',
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
                 );
-              },
+              }).toList(),
             ),
           ),
         ],
