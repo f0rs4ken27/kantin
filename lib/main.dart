@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:canteen/upload.dart';
-
 import 'package:canteen/DashboardKantin.dart';
 
 void main() {

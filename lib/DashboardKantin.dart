@@ -1,23 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-
-class Menu {
-  final String? name;
-  final String? price;
-
-  Menu({
-    this.name,
-    this.price,
-  });
-
-  factory Menu.fromJson(Map<String, dynamic> json) {
-    return Menu(
-      name: json['nama_menu'],
-      price: json['harga'],
-    );
-  }
-}
+import 'package:google_fonts/google_fonts.dart';
+import 'package:canteen/deksripsi.dart';
+import 'package:canteen/menu.dart';
 
 class DashboardKantin extends StatefulWidget {
   @override
@@ -28,8 +14,7 @@ class _DashboardKantinState extends State<DashboardKantin> {
   List<Menu> _menus = [];
 
   Future<void> fetchMenus() async {
-    final response =
-        await http.get(Uri.parse('http://localhost/kantin/read.php'));
+    final response = await http.get(Uri.parse('http://localhost/kantin/read.php'));
 
     if (response.statusCode == 200) {
       final List<dynamic> jsonResponse = jsonDecode(response.body);
@@ -87,13 +72,15 @@ class _DashboardKantinState extends State<DashboardKantin> {
             ),
           ),
           Container(
-            margin: EdgeInsets.fromLTRB(40, 0, 40, 0),
+            margin: EdgeInsets.symmetric(horizontal: 40),
             child: TextField(
               decoration: InputDecoration(
-                  hintText: 'Cari makanan atau minuman',
-                  prefixIcon: Icon(Icons.search),
-                  border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(30))),
+                hintText: 'Cari makanan atau minuman',
+                prefixIcon: Icon(Icons.search),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(30),
+                ),
+              ),
             ),
           ),
           Container(
@@ -101,7 +88,7 @@ class _DashboardKantinState extends State<DashboardKantin> {
             child: Align(
               alignment: Alignment.centerLeft,
               child: Text(
-                "Daftar Makanan",
+                "Daftar Menu",
                 style: TextStyle(
                   fontSize: 25,
                   fontWeight: FontWeight.bold,
@@ -110,50 +97,85 @@ class _DashboardKantinState extends State<DashboardKantin> {
             ),
           ),
           Flexible(
-            child: GridView.count(
-              crossAxisCount: 2,
-              crossAxisSpacing: 5,
-              mainAxisSpacing: 5,
-              childAspectRatio: 0.8,
-              children: _menus.map((menu) {
-                return Center(
-                  child: Card(
-                    child: InkWell(
-                      splashColor: Colors.blue.withAlpha(30),
+            child: SingleChildScrollView(
+              child: Container(
+                margin: EdgeInsets.fromLTRB(0, 20, 0, 0),
+                child: Wrap(
+                  spacing: 10.0,
+                  runSpacing: 10.0,
+                  children: _menus.map((menu) {
+                    return GestureDetector(
                       onTap: () {
-                        // Handle tap event
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => DetailPage(menu: menu,),
+                          ),
+                        );
                       },
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: <Widget>[
-                          ClipRRect(
-                            borderRadius: BorderRadius.only(
-                              topLeft: Radius.circular(4.0),
-                              topRight: Radius.circular(4.0),
-                            ),
-                            child: ClipOval(
-                              child: Image.asset(
-                                'assets/images/${menu.name}.jpeg',
-                                height: 120,
-                              ),
-                            ),
-                          ),
-                          Container(
-                            padding: EdgeInsets.all(8.0),
-                            child: Text(
-                              menu.name ?? '',
-                              style: TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ),
-                        ],
+                      child: _buildMenuWithName(
+                        'assets/images/${menu.name}.jpeg',
+                        menu.name ?? '',
                       ),
-                    ),
-                  ),
-                );
-              }).toList(),
+                    );
+                  }).toList(),
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildMenuContainer(String imagePath, double width, String name) {
+    return Container(
+      width: 110,
+      margin: EdgeInsets.fromLTRB(0, 0, 18, 1),
+      decoration: BoxDecoration(
+        color: Color(0xFFBCBBF5),
+        borderRadius: BorderRadius.circular(20),
+      ),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Container(
+            height: 90,
+            padding: EdgeInsets.fromLTRB(4, 10, 4, 0),
+            child: Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(20),
+                image: DecorationImage(
+                  fit: BoxFit.cover,
+                  image: AssetImage(imagePath),
+                ),
+              ),
+            ),
+          ),
+          SizedBox(height: 5),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildMenuWithName(String imagePath, String name) {
+    return Container(
+      child: Column(
+        children: [
+          _buildMenuContainer(imagePath, 110, name),
+          SizedBox(height: 5),
+          Container(
+            margin: EdgeInsets.fromLTRB(0, 0, 20, 0),
+            child: Text(
+              name,
+              textAlign: TextAlign.center,
+              style: GoogleFonts.getFont(
+                'Poppins',
+                fontWeight: FontWeight.w400,
+                fontSize: 12,
+                color: Color(0xFF5F5050),
+              ),
             ),
           ),
         ],
