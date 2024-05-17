@@ -1,52 +1,126 @@
-
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:canteen/menu.dart';
 
-
 class DetailPage extends StatelessWidget {
-  final   Menu menu;
+  final Menu menu;
 
   DetailPage({required this.menu});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(menu.name ?? 'Detail'),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
+      body: Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(50),
+          gradient: LinearGradient(
+            begin: Alignment(0, -1),
+            end: Alignment(-0.337, 1),
+            colors: <Color>[Color(0xFF3F1F9B), Color(0xFF7F7CF2)],
+            stops: <double>[0, 1],
+          ),
+        ),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Center(
-              child: Image.asset(
-                'assets/images/${menu.name}.jpeg',
-                height: 200,
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Container(
+              margin: EdgeInsets.fromLTRB(0, 0, 1, 98),
+              child: Container(
+                margin: EdgeInsets.fromLTRB(0, 100, 0, 0),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(20),
+                  image: DecorationImage(
+                    fit: BoxFit.cover,
+                    image: AssetImage(
+                      'assets/images/${menu.name}.jpeg',
+                    ),
+                  ),
+                ),
+                width: 191,
+                height: 177,
               ),
             ),
-            SizedBox(height: 16),
-            Text(
-              menu.name ?? '',
-              style: GoogleFonts.poppins(
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            SizedBox(height: 8),
-            Text(
-              'Price: ${menu.price ?? ''}',
-              style: GoogleFonts.poppins(
-                fontSize: 18,
-                color: Colors.grey,
-              ),
-            ),
-            SizedBox(height: 16),
-            Text(
-              menu.description ?? 'No description available',
-              style: GoogleFonts.poppins(
-                fontSize: 16,
+            Expanded(
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(70),
+                  ),
+
+                ),
+                child: Stack(
+                  children: [
+                    Positioned(
+                      right: 104.1,
+                      top: 300,
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(40),
+                      ),
+                    ),
+                    Container(
+                      margin: EdgeInsets.fromLTRB(10, 50, 20, 0),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Container(
+                            margin: EdgeInsets.fromLTRB(0, 0, 0, 25),
+                            child: Align(
+                              alignment: Alignment.topRight,
+                              child: SizedBox(
+                                width: 450.1,
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Container(
+                                      margin: EdgeInsets.fromLTRB(0, 0, 0, 100),
+                                      child: Text(
+                                        menu.name ?? '',
+                                        style: GoogleFonts.getFont(
+                                          'Poppins',
+                                          fontWeight: FontWeight.w500,
+                                          fontSize: 30,
+                                          color: Color(0xFF000000),
+                                        ),
+                                      ),
+                                    ),
+                                    Container(
+                                      child: Text(
+                                        'Rp ${menu.price}',
+                                        style: GoogleFonts.getFont(
+                                          'Poppins',
+                                          fontWeight: FontWeight.w300,
+                                          fontSize: 20,
+                                          color: Color(0xFF000000),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                          Container(
+                            margin: EdgeInsets.fromLTRB(8.4, 0, 0, 79),
+                            child: Text(
+                              menu.description ?? '',
+                              style: GoogleFonts.getFont(
+                                'Poppins',
+                                fontWeight: FontWeight.w400,
+                                fontSize: 20,
+                                color: Color(0xFF3C2A2A),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
           ],
